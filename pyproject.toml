@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kdrive-cli"
+version = "0.1.0"
+description = "Unofficial CLI for Infomaniak kDrive"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.28",
+]
+
+[project.optional-dependencies]
+gcp = ["google-cloud-secret-manager>=2.0"]
+aws = ["boto3>=1.26"]
+azure = ["azure-identity>=1.12", "azure-keyvault-secrets>=4.7"]
+keyring = ["keyring>=24.0"]
+all = ["kdrive-cli[gcp,aws,azure,keyring]"]
+
+[project.scripts]
+kdrive = "kdrive_cli.__main__:main"
+
+[project.urls]
+Repository = "https://github.com/kilian-lm/kdrive-cli"
+
+[tool.setuptools.packages.find]
+include = ["kdrive_cli*"]
