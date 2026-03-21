@@ -3,9 +3,9 @@ requires = ["setuptools>=68.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "kdrive-cli"
-version = "0.1.0"
-description = "Unofficial CLI for Infomaniak kDrive"
+name = "infomaniak-tools"
+version = "0.3.0"
+description = "Unofficial CLI for Infomaniak Cloud — kDrive, kChat, accounts, and more"
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
@@ -18,13 +18,15 @@ gcp = ["google-cloud-secret-manager>=2.0"]
 aws = ["boto3>=1.26"]
 azure = ["azure-identity>=1.12", "azure-keyvault-secrets>=4.7"]
 keyring = ["keyring>=24.0"]
-all = ["kdrive-cli[gcp,aws,azure,keyring]"]
+all = ["infomaniak-tools[gcp,aws,azure,keyring]"]
 
 [project.scripts]
+infomaniak = "infomaniak_cli.__main__:main"
 kdrive = "kdrive_cli.__main__:main"
+kchat-notify = "kchat_notify.__main__:main"
 
 [project.urls]
-Repository = "https://github.com/kilian-lm/kdrive-cli"
+Repository = "https://github.com/kilian-lm/infomaniak-tools"
 
 [tool.setuptools.packages.find]
-include = ["kdrive_cli*"]
+include = ["infomaniak_cli*", "kdrive_cli*", "kchat_notify*"]

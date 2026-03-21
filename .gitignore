@@ -3,3 +3,7 @@ __pycache__/
 dist/
 build/
 .eggs/
+
+# Personal migration scripts (contain hardcoded credentials/emails)
+gdrive_to_kdrive.py
+gdrive_to_kdrive_resume.py

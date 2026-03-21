@@ -36,8 +36,7 @@ class KDriveClient:
             err = body.get("error", {})
             code = err.get("code", resp.status_code)
             desc = err.get("description", resp.text[:200])
-            print(f"API Error ({code}): {desc}", file=sys.stderr)
-            sys.exit(1)
+            raise RuntimeError(f"API Error ({code}): {desc}")
         return body
 
     @property
@@ -61,11 +60,23 @@ class KDriveClient:
 
     def list_files(self, drive_id: int, directory_id: int = 1,
                    order_by: str = "name", order_dir: str = "asc") -> list[dict]:
-        body = self.request(
-            "GET", f"/3/drive/{drive_id}/files/{directory_id}/files",
-            params={"order_by": order_by, "order_direction": order_dir},
-        )
-        return body.get("data", [])
+        all_files = []
+        cursor = None
+        while True:
+            params = {"order_by": order_by, "order_direction": order_dir}
+            if cursor:
+                params["cursor"] = cursor
+            body = self.request(
+                "GET", f"/3/drive/{drive_id}/files/{directory_id}/files",
+                params=params,
+            )
+            all_files.extend(body.get("data", []))
+            if not body.get("has_more", False):
+                break
+            cursor = body.get("cursor")
+            if not cursor:
+                break
+        return all_files
 
     def get_file(self, drive_id: int, file_id: int, with_extra: str | None = None) -> dict:
         params = {}
